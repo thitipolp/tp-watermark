@@ -82,7 +82,7 @@
 					const watermarkedImg = new Image();
 
 					// Set the source of the watermarked image to the canvas data URL
-					watermarkedImg.src = canvas.toDataURL();
+					watermarkedImg.src = canvas.toDataURL("image/jpeg");
 
 					// Display the watermarked image
 					const result = document.querySelector('.result');
