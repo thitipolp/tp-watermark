@@ -42,6 +42,7 @@
 		<button type="submit">Upload Files</button>
 	</form>
 
+
 	<div class="result" >
 		<!-- The uploaded and watermarked image will be displayed here -->
 	</div>
@@ -89,7 +90,8 @@
 					const watermarkedImg = new Image();
 
 					// Set the source of the watermarked image to the canvas data URL
-					watermarkedImg.src = canvas.toDataURL("image/jpeg",0.8);
+					watermarkedImg.src = canvas.toDataURL("image/png");
+					
 
 					// Display the watermarked image
 					const result = document.querySelector('.result');
@@ -100,6 +102,9 @@
 			};
 			img1.src = URL.createObjectURL(image1);
 		});
+
+
+
 	</script>
 </body>
 </html>
