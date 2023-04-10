@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Image Watermark Overlay</title>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
 	<style>
 		/* Styles for the file upload form */
 		.file-upload {
@@ -18,11 +19,17 @@
 			padding: 10px;
 			box-sizing: border-box;
 		}
+
+		/* body padding */
+		body {
+			padding-top: 0.8em;
+			padding-left: 1em
+		}
 	</style>
 </head>
 <body>
 	<h1>PCC Watermark Overlay</h1>
-	<form class="file-upload">
+	<form class="file-upload pure-form">
 		<label for="image1">1. เลือกรูปปก:</label>
 		<input type="file" id="image1" accept="image/*" />
         <br>
@@ -35,7 +42,7 @@
 		<button type="submit">Upload Files</button>
 	</form>
 
-	<div class="result">
+	<div class="result" >
 		<!-- The uploaded and watermarked image will be displayed here -->
 	</div>
 
@@ -82,7 +89,7 @@
 					const watermarkedImg = new Image();
 
 					// Set the source of the watermarked image to the canvas data URL
-					watermarkedImg.src = canvas.toDataURL("image/jpeg");
+					watermarkedImg.src = canvas.toDataURL("image/jpeg",0.8);
 
 					// Display the watermarked image
 					const result = document.querySelector('.result');
