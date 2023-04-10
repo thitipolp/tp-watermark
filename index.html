@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Image Watermark Overlay</title>
+	<style>
+		/* Styles for the file upload form */
+		.file-upload {
+			margin-bottom: 10px;
+		}
+
+		/* Styles for the uploaded images */
+		.uploaded-image {
+			display: block;
+			max-width: 100%;
+			margin: 0 auto;
+			border: 1px solid #ccc;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<h1>PCC Watermark Overlay</h1>
+	<form class="file-upload">
+		<label for="image1">1. เลือกรูปปก:</label>
+		<input type="file" id="image1" accept="image/*" />
+        <br>
+        <br>
+		<label for="image2">2. เลือกรูปโลโก้ png <a href="logo.png"> ขนาด 1200 x 628 </a> :</label>
+		<input type="file" id="image2" accept="image/*" />
+        <br>
+        <br>
+        <label for="submit">3. คลิก</label>
+		<button type="submit">Upload Files</button>
+	</form>
+
+	<div class="result">
+		<!-- The uploaded and watermarked image will be displayed here -->
+	</div>
+
+	<script>
+		const form = document.querySelector('.file-upload');
+		form.addEventListener('submit', function(event) {
+			event.preventDefault();
+
+			// Get the uploaded images
+			const image1 = document.querySelector('#image1').files[0];
+			
+            const image2 = document.querySelector('#image2').files[0];
+
+			// Create a new image element for the background image
+			const img1 = new Image();
+
+			// Load the background image into the new image element
+			img1.onload = function() {
+				// Create a new image element for the watermark image
+				const img2 = new Image();
+
+				// Load the watermark image into the new image element
+				img2.onload = function() {
+					// Get the canvas element
+					const canvas = document.createElement('canvas');
+					const ctx = canvas.getContext('2d');
+
+					// Set the canvas size to the size of the final result image
+					canvas.width = 1200;
+					canvas.height = 628;
+
+					// Draw the background image onto the canvas
+					ctx.drawImage(img1, 0,  (img1.height - (img1.width/1.91) ) / 2, img1.width, img1.width/1.91, 0, 0, 1200, 628);
+
+					// Calculate the position of the watermark
+					const watermarkMargin = 10;
+					const watermarkX = canvas.width - img2.width - watermarkMargin;
+					const watermarkY = canvas.height - img2.height - watermarkMargin;
+
+					// Draw the watermark onto the canvas
+					ctx.drawImage(img2, watermarkX, watermarkY);
+
+					// Create a new image element for the watermarked image
+					const watermarkedImg = new Image();
+
+					// Set the source of the watermarked image to the canvas data URL
+					watermarkedImg.src = canvas.toDataURL();
+
+					// Display the watermarked image
+					const result = document.querySelector('.result');
+					result.innerHTML = '';
+					result.appendChild(watermarkedImg);
+				};
+				img2.src = URL.createObjectURL(image2);
+			};
+			img1.src = URL.createObjectURL(image1);
+		});
+	</script>
+</body>
+</html>
