@@ -20,6 +20,17 @@
 			box-sizing: border-box;
 		}
 
+		input, button{
+ padding: 8px;
+ border-radius: 10px;
+ margin: 5px auto;
+ border: 1px solid #918383;
+ box-shadow: 1px 2px 1px 2px rgb(230, 229, 229);
+ color: #2e1111;
+ outline: none;
+ font-size: 18px;
+}
+
 		/* body padding */
 		body {
 			padding-top: 0.8em;
@@ -31,15 +42,21 @@
 	<h1>PCC Watermark Overlay</h1>
 	<form class="file-upload pure-form">
 		<label for="image1">1. เลือกรูปปก:</label>
+		<br>
 		<input type="file" id="image1" accept="image/*" />
-        <br>
-        <br>
-		<label for="image2">2. เลือกรูปโลโก้ png <a href="logo.png"> ขนาด 1200 x 628 </a> :</label>
+        <br><br>
+		<label for="image2">2. เลือกรูปโลโก้ png ขนาด 1200 x 628 </label>	<span style="font-size:0.9em;color:gray">(ถ้าไม่มีให้ดาวน์โหลด: <a href="logo.png"> logo.png</a> )</span>
+		<br>
 		<input type="file" id="image2" accept="image/*" />
-        <br>
-        <br>
-        <label for="submit">3. คลิก</label>
+        <br><br>
+        <label for="submit">3. คลิกเพื่อสร้างรูป</label>
+		<br>
 		<button type="submit">Upload Files</button>
+		<br><br>
+		<label for="submit">4. คลิกเพื่อดาวน์โหลดรูปปก</label>
+		<br>
+		<button id="download-button">Download Image</button>
+
 	</form>
 
 
@@ -90,7 +107,7 @@
 					const watermarkedImg = new Image();
 
 					// Set the source of the watermarked image to the canvas data URL
-					watermarkedImg.src = canvas.toDataURL("image/jpeg",0.6);
+					watermarkedImg.src = canvas.toDataURL("image/jpeg",0.7);
 					
 
 					// Display the watermarked image
@@ -103,7 +120,19 @@
 			img1.src = URL.createObjectURL(image1);
 		});
 
+const downloadButton = document.querySelector('#download-button');
+downloadButton.addEventListener('click', function() {
+    const watermarkedImg = document.querySelector('.result img');
+    const downloadLink = document.createElement('a');
+    downloadLink.setAttribute('download', getOriginalFileName(document.querySelector('#image1').value) + '-social.jpg');
+    downloadLink.setAttribute('href', watermarkedImg.src);
+    downloadLink.click();
+});
 
+function getOriginalFileName(filepath) {
+    const lastIndex = filepath.lastIndexOf("\\") || filepath.lastIndexOf("/");
+    return filepath.substring(lastIndex + 1);
+}
 
 	</script>
 </body>
