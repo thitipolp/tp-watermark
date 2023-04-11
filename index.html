@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Image Watermark Overlay</title>
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+		integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
 	<style>
 		/* Styles for the file upload form */
 		.file-upload {
@@ -20,20 +22,21 @@
 			box-sizing: border-box;
 		}
 
-		input, button{
- padding: 8px;
- border-radius: 10px;
- margin: 5px auto;
- border: 1px solid #918383;
- box-shadow: 1px 2px 1px 2px rgb(230, 229, 229);
- color: #2e1111;
- outline: none;
- font-size: 18px;
-}
+		input,
+		button {
+			padding: 8px;
+			border-radius: 10px;
+			margin: 5px auto;
+			border: 1px solid #918383;
+			box-shadow: 1px 2px 1px 2px rgb(230, 229, 229);
+			color: #2e1111;
+			outline: none;
+			font-size: 18px;
+		}
 
-img {
-	max-width: 600px;
-}
+		img {
+			max-width: 600px;
+		}
 
 		/* body padding */
 		body {
@@ -42,18 +45,20 @@ img {
 		}
 	</style>
 </head>
+
 <body>
 	<h1>PCC Watermark Overlay</h1>
 	<form class="file-upload pure-form">
 		<label for="image1">1. เลือกรูปปก:</label>
 		<br>
 		<input type="file" id="image1" accept="image/*" />
-        <br><br>
-		<label for="image2">2. เลือกรูปโลโก้ png ขนาด 1200 x 628 </label>	<span style="font-size:0.9em;color:gray">(ถ้าไม่มีให้ดาวน์โหลด: <a href="logo.png"> logo.png</a> )</span>
+		<br><br>
+		<label for="image2">2. เลือกรูปโลโก้ png ขนาด 1200 x 628 </label> <span
+			style="font-size:0.9em;color:gray">(ถ้าไม่มีให้ดาวน์โหลด: <a href="logo.png"> logo.png</a> )</span>
 		<br>
 		<input type="file" id="image2" accept="image/*" />
-        <br><br>
-        <label for="submit">3. คลิกเพื่อสร้างรูป</label>
+		<br><br>
+		<label for="submit">3. คลิกเพื่อสร้างรูป</label>
 		<br>
 		<button type="submit">Upload Files</button>
 		<br><br>
@@ -64,30 +69,30 @@ img {
 	</form>
 
 
-	<div class="result" >
+	<div class="result">
 		<!-- The uploaded and watermarked image will be displayed here -->
 	</div>
 
 	<script>
 		const form = document.querySelector('.file-upload');
-		form.addEventListener('submit', function(event) {
+		form.addEventListener('submit', function (event) {
 			event.preventDefault();
 
 			// Get the uploaded images
 			const image1 = document.querySelector('#image1').files[0];
-			
-            const image2 = document.querySelector('#image2').files[0];
+
+			const image2 = document.querySelector('#image2').files[0];
 
 			// Create a new image element for the background image
 			const img1 = new Image();
 
 			// Load the background image into the new image element
-			img1.onload = function() {
+			img1.onload = function () {
 				// Create a new image element for the watermark image
 				const img2 = new Image();
 
 				// Load the watermark image into the new image element
-				img2.onload = function() {
+				img2.onload = function () {
 					// Get the canvas element
 					const canvas = document.createElement('canvas');
 					const ctx = canvas.getContext('2d');
@@ -97,7 +102,7 @@ img {
 					canvas.height = 628;
 
 					// Draw the background image onto the canvas
-					ctx.drawImage(img1, 0,  (img1.height - (img1.width/1.91) ) / 2, img1.width, img1.width/1.91, 0, 0, 1200, 628);
+					ctx.drawImage(img1, 0, (img1.height - (img1.width / 1.91)) / 2, img1.width, img1.width / 1.91, 0, 0, 1200, 628);
 
 					// Calculate the position of the watermark
 					const watermarkMargin = 10;
@@ -111,8 +116,8 @@ img {
 					const watermarkedImg = new Image();
 
 					// Set the source of the watermarked image to the canvas data URL
-					watermarkedImg.src = canvas.toDataURL("image/jpeg",0.7);
-					
+					watermarkedImg.src = canvas.toDataURL("image/jpeg", 0.7);
+
 
 					// Display the watermarked image
 					const result = document.querySelector('.result');
@@ -124,20 +129,21 @@ img {
 			img1.src = URL.createObjectURL(image1);
 		});
 
-const downloadButton = document.querySelector('#download-button');
-downloadButton.addEventListener('click', function() {
-    const watermarkedImg = document.querySelector('.result img');
-    const downloadLink = document.createElement('a');
-    downloadLink.setAttribute('download', getOriginalFileName(document.querySelector('#image1').value) + '-social.jpg');
-    downloadLink.setAttribute('href', watermarkedImg.src);
-    downloadLink.click();
-});
+		const downloadButton = document.querySelector('#download-button');
+		downloadButton.addEventListener('click', function () {
+			const watermarkedImg = document.querySelector('.result img');
+			const downloadLink = document.createElement('a');
+			downloadLink.setAttribute('download', getOriginalFileName(document.querySelector('#image1').value) + '-social.jpg');
+			downloadLink.setAttribute('href', watermarkedImg.src);
+			downloadLink.click();
+		});
 
-function getOriginalFileName(filepath) {
-    const lastIndex = filepath.lastIndexOf("\\") || filepath.lastIndexOf("/");
-    return filepath.substring(lastIndex + 1);
-}
+		function getOriginalFileName(filepath) {
+			const lastIndex = filepath.lastIndexOf("\\") || filepath.lastIndexOf("/");
+			return filepath.substring(lastIndex + 1);
+		}
 
 	</script>
 </body>
+
 </html>
