@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Image Watermarking</title>
+    <style>
+      /* Add some styles to center the upload box */
+      #upload-container {
+        width: 400px;
+        margin: auto;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="upload-container">
+      <h1>Upload an image to add a watermark</h1>
+      <input type="file" id="image-upload">
+      <br>
+      <button id="watermark-button" disabled>Watermark Image</button>
+      <br><br>
+      <canvas id="canvas"></canvas>
+      <br>
+      <button id="download-button" disabled>Download Watermarked Image</button>
+    </div>
+    
+    <script>
+      // Load the logo image
+      const logoImage = new Image();
+      logoImage.src = "logo.png";
+      
+      // Get the canvas element and the 2D context
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      
+      // Get the image upload input and the watermark button
+      const imageUpload = document.getElementById("image-upload");
+      const watermarkButton = document.getElementById("watermark-button");
+      
+      // Add a change listener to the image upload input
+      imageUpload.addEventListener("change", handleImageUpload);
+      
+      // Add a click listener to the watermark button
+      watermarkButton.addEventListener("click", handleWatermarkButton);
+      
+      // Add a click listener to the download button
+      const downloadButton = document.getElementById("download-button");
+      downloadButton.addEventListener("click", handleDownloadButton);
+      
+      function handleImageUpload(event) {
+        // Load the uploaded image
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+          const image = new Image();
+          image.onload = function() {
+            // Draw the uploaded image on the canvas
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
+            // Enable the watermark button
+            watermarkButton.disabled = false;
+          };
+          image.src = event.target.result;
+        };
+        
+        reader.readAsDataURL(file);
+      }
+      
+      function handleWatermarkButton() {
+        // Draw the logo image on the canvas as a watermark
+        ctx.drawImage(logoImage, canvas.width - logoImage.width, canvas.height - logoImage.height);
+        // Disable the watermark button
+        watermarkButton.disabled = true;
+        // Enable the download button
+        downloadButton.disabled = false;
+      }
+      
+      function handleDownloadButton() {
+        // Convert the canvas to a data URL and download it as a file
+        const link = document.createElement("a");
+        link.download = "watermarked-image.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+    </script>
+  </body>
+</html>
